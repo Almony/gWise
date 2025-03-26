@@ -1,16 +1,16 @@
 # 🤖 Telegram AI Assistant Bot Template
 
-Модульный шаблон для создания Telegram-ботов на Pyrogram с AI-ассистентом (GPT), MongoDB, логированием и системой подписок.
+🔹 Модульный шаблон Telegram-бота на Pyrogram с AI (GPT), MongoDB, логированием и подписками.
 
 ---
 
 ## 🚀 Возможности
 
-- 📅 Напоминания и задачи
+- 🗓️ Напоминания и задачи
 - 💰 Учёт расходов и доходов
 - 👥 Управление группами и каналами
 - 🧠 AI-ассистент (GPT) с ограничением по подписке
-- 🧾 Поддержка подписок: free, base, advanced, pro
+- 📜 Поддержка подписок: free, base, advanced, pro
 - 🌐 MongoDB для хранения всех данных
 - 🧪 Поддержка pytest для модульных тестов
 - 📦 Расширяемая архитектура и модульность
@@ -20,22 +20,19 @@
 ## ⚙️ Установка
 
 ### 🔹 Клонирование репозитория
-
 ```bash
 git clone git@github.com:Almony/t-assist.git
 cd t-assist
 ```
 
-### 🔹 Создание и активация виртуального окружения
-
+### 🔹 Виртуальное окружение
 ```bash
 python3 -m venv venv
-source venv/bin/activate    # для Linux/macOS
+source venv/bin/activate  # для Linux/macOS
 venv\Scripts\activate.bat # для Windows
 ```
 
 ### 🔹 Установка зависимостей
-
 ```bash
 pip install -r requirements.txt
 ```
@@ -43,9 +40,7 @@ pip install -r requirements.txt
 ---
 
 ## 🔑 Настройка `.env`
-
-Создайте файл `.env` в корне проекта со следующим содержимым:
-
+Создайте файл `.env`:
 ```dotenv
 API_ID=your_api_id
 API_HASH=your_api_hash
@@ -56,66 +51,75 @@ OPENAI_API_KEY=your_openai_api_key
 
 ---
 
-## 🧭 Структура проекта
-
+## 🔎 Структура проекта
 ```
 bot_template/
 ├── ai/
-│   └── ai_manager.py                # Обработка AI-запросов через OpenAI API
+│   └── ai_manager.py
 ├── core/
-│   ├── config.py                    # Загрузка переменных окружения
-│   ├── logger.py                    # Кастомный логгер
-│   └── mongo_manager.py             # Обёртка для работы с MongoDB
+│   ├── config.py
+│   ├── logger.py
+│   └── mongo_manager.py
 ├── features/
-│   ├── reminder_manager.py          # Управление напоминаниями
-│   ├── finance_manager.py           # Учёт финансов
-│   └── group_manager.py             # Управление группами и настройками
+│   ├── reminder_manager.py
+│   ├── finance_manager.py
+│   └── group_manager.py
 ├── subscription/
-│   └── subscription_manager.py      # Подписки и контроль лимитов
+│   └── subscription_manager.py
 ├── handlers/
-│   ├── start_handler.py             # Обработка команды /start
-│   ├── ai_handler.py                # Обработка /ai и подобных команд
-│   └── common.py                    # Общие утилиты и декораторы
+│   ├── start_handler.py
+│   ├── ai_handler.py
+│   └── common.py
 ├── tests/
-│   └── test_start.py                # Базовые автотесты
-├── logs/                            # Логи (создаются автоматически)
-├── main.py                          # Точка входа, инициализация клиента Pyrogram
-├── .env                             # Секреты и конфигурация
-├── .gitignore                       # Исключения для git
-├── README.md                        # Документация
-└── requirements.txt                 # Зависимости проекта
+├── logs/
+├── main.py
+├── .env
+├── .gitignore
+├── README.md
+└── requirements.txt
 ```
 
 ---
 
 ## 🧪 Тестирование
-
 ```bash
 pytest
 ```
 
 ---
 
-## 🐳 Docker (опционально)
+## 💪 TODO
 
-```dockerfile
-FROM python:3.11-slim
+### 📉 Безопасность и валидация
+- [ ] Валидация входных данных (`user_id`, `prompt`, `amount`, `due_time`, `category`)
+- [ ] Обработка `None`/пустых `user.subscription`
+- [ ] Безопасный JSON-парсинг ответа от OpenAI
+- [ ] Retry-механизм при ошибках OpenAI API
 
-WORKDIR /app
+### 🤔 Тестирование
+- [ ] Расширить unit-тесты для AI, подписок, финансов, напоминаний
+- [ ] Проверка, что данные действительно сохраняются в MongoDB
 
-COPY . .
+### 🏛️ Архитектура
+- [ ] Dependency Injection для `MongoManager`, `Logger`
+- [ ] Утилиты: `sanitize_input()`, `safe_mongo_call()`, `retry_async()`
 
-RUN pip install --no-cache-dir -r requirements.txt
+### ⏰ Планировщик
+- [ ] Интеграция `apscheduler` для напоминаний
+- [ ] Отметка `notified` с логированием ошибок
 
-CMD ["python", "main.py"]
-```
+### 💳 Подписки и платежи
+- [ ] Интеграция Telegram Payments или Stripe
+- [ ] Webhook-обновления подписки
+- [ ] Уведомления о лимите или окончании срока
+
+### 📄 Отчёты и экспорт
+- [ ] Генерация AI-отчётов в PDF/Excel
 
 ---
 
-## ⚙️ CI (GitHub Actions пример)
-
+## 🚩 CI/CD (GitHub Actions)
 ```yaml
-# .github/workflows/python-tests.yml
 name: Pytest
 
 on: [push, pull_request]
@@ -123,30 +127,17 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Run tests
-        run: pytest
+      - run: pip install -r requirements.txt
+      - run: pytest
 ```
 
 ---
 
-## 📌 TODO
-
-- [ ] Интеграция оплаты
-- [ ] Рассылки по подпискам
-- [ ] AI-отчёты и PDF/Excel генерация
-- [ ] Планировщик уведомлений
-
----
-
-## 🧑‍💻 Автор
-
+## 👨‍💻 Автор
 Разработано с ❤️ и AI.
+
