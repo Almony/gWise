@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Mac / Linux / Windows system files
+.DS_Store
+Thumbs.db
