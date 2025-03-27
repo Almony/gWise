@@ -1,143 +1,118 @@
-# 🤖 Telegram AI Assistant Bot Template
+# 🤖 Telegram AI Assistant Bot (v2)
 
-🔹 Модульный шаблон Telegram-бота на Pyrogram с AI (GPT), MongoDB, логированием и подписками.
+Мощный и масштабируемый Telegram-бот с AI-интеграцией (GPT), подписками, MongoDB и модульной архитектурой.
 
 ---
 
 ## 🚀 Возможности
 
-- 🗓️ Напоминания и задачи
-- 💰 Учёт расходов и доходов
-- 👥 Управление группами и каналами
-- 🧠 AI-ассистент (GPT) с ограничением по подписке
-- 📜 Поддержка подписок: free, base, advanced, pro
-- 🌐 MongoDB для хранения всех данных
-- 🧪 Поддержка pytest для модульных тестов
-- 📦 Расширяемая архитектура и модульность
+- 🧠 AI-ассистент с категориями и ограничениями по подписке
+- 🗓 Напоминания с временем, хранением и планируемыми уведомлениями
+- 💰 Учёт расходов/доходов
+- 👥 Поддержка чатов и групп (в разработке)
+- 📊 История запросов и транзакций
+- 🧪 Тестирование через `pytest`
+- 🔐 Подключение через `.env`, логирование и безопасная структура
+- 💡 Расширяемость: легко добавлять новые фичи
 
 ---
 
 ## ⚙️ Установка
 
-### 🔹 Клонирование репозитория
 ```bash
-git clone git@github.com:Almony/t-assist.git
+git clone https://github.com/your-name/t-assist.git
 cd t-assist
-```
-
-### 🔹 Виртуальное окружение
-```bash
 python3 -m venv venv
-source venv/bin/activate  # для Linux/macOS
-venv\Scripts\activate.bat # для Windows
-```
-
-### 🔹 Установка зависимостей
-```bash
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
-
-## 🔑 Настройка `.env`
-Создайте файл `.env`:
+Создайте `.env`:
 ```
-API_ID=your_api_id
-API_HASH=your_api_hash
-BOT_TOKEN=your_bot_token
+API_ID=...
+API_HASH=...
+BOT_TOKEN=...
 MONGODB_URI=mongodb://localhost:27017
-OPENAI_API_KEY=your_openai_api_key
+OPENAI_API_KEY=...
 ```
 
 ---
 
-## 🔎 Структура проекта
+## 🗂️ Структура проекта
+
 ```
 bot_template/
 ├── ai/
-│   └── ai_manager.py
+│   └── ai_manager.py             # Логика общения с OpenAI
+│
 ├── core/
-│   ├── config.py
-│   ├── logger.py
-│   └── mongo_manager.py
+│   ├── config.py                 # Настройки из .env
+│   ├── logger.py                 # Кастомный логгер
+│   └── mongo_manager.py          # Работа с MongoDB (motor)
+│
 ├── features/
-│   ├── reminder_manager.py
-│   ├── finance_manager.py
-│   └── group_manager.py
+│   ├── reminder/
+│   │   └── manager.py            # Напоминания: добавление, проверка, отметка
+│   │
+│   ├── finance/
+│   │   └── manager.py            # Финансы: транзакции, фильтрация
+│   │
+│   └── group/
+│       └── manager.py            # Заготовка для работы с группами
+│
 ├── subscription/
-│   └── subscription_manager.py
+│   └── subscription_manager.py    # Управление подписками и декоратор
+│
 ├── handlers/
-│   ├── start_handler.py
-│   ├── ai_handler.py
-│   └── common.py
+│   ├── start_handler.py          # Команда /start
+│   ├── ai_handler.py             # Обработка AI-команд с категориями
+│   └── common.py                 # (TODO) Общие декораторы и утилиты
+│
 ├── tests/
-├── logs/
-├── main.py
-├── .env
-├── .gitignore
-├── README.md
-└── requirements.txt
+│   ├── test_start.py
+│   ├── test_ai.py
+│   ├── test_finance.py
+│   ├── test_reminder.py
+│   └── test_subscription.py
+│
+├── main.py                       # Точка входа, запуск Pyrogram-клиента
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
 ## 🧪 Тестирование
+
 ```bash
 pytest
 ```
 
 ---
 
-## 💪 TODO
+## 🛠 TODO / Roadmap
 
-### 📉 Безопасность и валидация
-- [ ] Валидация входных данных (`user_id`, `prompt`, `amount`, `due_time`, `category`)
-- [ ] Обработка `None`/пустых `user.subscription`
-- [ ] Безопасный JSON-парсинг ответа от OpenAI
-- [ ] Retry-механизм при ошибках OpenAI API
+### 🌐 Архитектура
+- [ ] Dependency Injection (Mongo, Logger)
+- [ ] Хэндлеры и менеджеры вынести в отдельные подпапки при необходимости
 
-### 🤔 Тестирование
-- [ ] Расширить unit-тесты для AI, подписок, финансов, напоминаний
-- [ ] Проверка, что данные действительно сохраняются в MongoDB
+### 🤖 AI-интеграция
+- [ ] Retry + safe parse
+- [ ] Генерация AI-отчётов
 
-### 🏛️ Архитектура
-- [ ] Dependency Injection для `MongoManager`, `Logger`
-- [ ] Утилиты: `sanitize_input()`, `safe_mongo_call()`, `retry_async()`
+### ⏰ Напоминания
+- [ ] Планировщик (apscheduler)
+- [ ] Уведомления
 
-### ⏰ Планировщик
-- [ ] Интеграция `apscheduler` для напоминаний
-- [ ] Отметка `notified` с логированием ошибок
-
-### 💳 Подписки и платежи
-- [ ] Интеграция Telegram Payments или Stripe
-- [ ] Webhook-обновления подписки
-- [ ] Уведомления о лимите или окончании срока
-
-### 📄 Отчёты и экспорт
-- [ ] Генерация AI-отчётов в PDF/Excel
+### 💳 Подписки
+- [ ] Telegram Payments / Stripe
+- [ ] Рассылки о лимитах
 
 ---
 
-## 🚩 CI/CD (GitHub Actions)
-```yaml
-name: Pytest
 
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      - run: pip install -r requirements.txt
-      - run: pytest
-```
 
 ---
 
 ## 👨‍💻 Автор
-Разработано с ❤️ и AI.
-
+Navapathi
