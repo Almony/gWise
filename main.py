@@ -5,7 +5,7 @@ from core.logger import CustomLogger
 logger = CustomLogger("Main")
 
 app = Client(
-    name="my_bot",
+    name="gWise",
     api_id=settings.API_ID,
     api_hash=settings.API_HASH,
     bot_token=settings.BOT_TOKEN

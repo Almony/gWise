@@ -27,3 +27,7 @@ venv/
 # Mac / Linux / Windows system files
 .DS_Store
 Thumbs.db
+
+# Telegram API cache
+*.session
+*.session-journal
