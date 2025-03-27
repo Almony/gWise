@@ -28,4 +28,5 @@ class FinanceManager:
             "timestamp": {"$gte": from_date}
         }).to_list(length=100)
 
+
 finance_manager = FinanceManager()

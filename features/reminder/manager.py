@@ -28,4 +28,5 @@ class ReminderManager:
         reminders = self.mongo.get_collection("reminders")
         await reminders.update_one({"_id": reminder_id}, {"$set": {"notified": True}})
 
+
 reminder_manager = ReminderManager()

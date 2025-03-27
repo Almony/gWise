@@ -1,5 +1,5 @@
 import pytest
-from features.reminder_manager import reminder_manager
+from features.reminder.manager import reminder_manager
 from datetime import datetime, timedelta
 
 @pytest.mark.asyncio
