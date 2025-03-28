@@ -2,10 +2,13 @@ from pyrogram import Client, filters
 from core.config import settings
 from core.logger import CustomLogger
 
-# === ИМПОРТИРУЕМ ХЭНДЛЕРЫ (чтобы декораторы сработали!) ===
-from handlers.common import help_handler
+from handlers.help import help_handler
+from handlers.ai import ai_handler
+from handlers.start import start_handler
+
 
 logger = CustomLogger("Main")
+
 
 app = Client(
     name="gWise",
