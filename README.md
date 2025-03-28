@@ -20,8 +20,8 @@
 ## ⚙️ Установка
 
 ```bash
-git clone https://github.com/your-name/t-assist.git
-cd t-assist
+git clone https://github.com/your-name/gWise.git
+cd gWise
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt

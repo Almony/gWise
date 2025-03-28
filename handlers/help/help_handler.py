@@ -80,5 +80,3 @@ async def help_callback_handler(client: Client, callback_query: CallbackQuery):
     await callback_query.answer()
     logger.debug(f"Пользователь {user_id} запросил помощь по разделу: {data}")
 
-
-logger.info("help_handler registered")
