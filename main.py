@@ -2,9 +2,9 @@ from pyrogram import Client, filters
 from core.config import settings
 from core.logger import CustomLogger
 
-from handlers.help import help_handler
-from handlers.ai import ai_handler
-from handlers.start import start_handler
+from handlers import help_handler
+from handlers import ai_handler
+from handlers import start_handler
 
 
 logger = CustomLogger("Main")
