@@ -53,10 +53,8 @@ bot_template/
 ├── features/
 │   ├── reminder/
 │   │   └── manager.py            # Напоминания: добавление, проверка, отметка
-│   │
 │   ├── finance/
 │   │   └── manager.py            # Финансы: транзакции, фильтрация
-│   │
 │   └── group/
 │       └── manager.py            # Заготовка для работы с группами
 │
@@ -66,10 +64,8 @@ bot_template/
 ├── handlers/
 │   ├── start/
 │   │   └── start_handler.py          # Команда /start
-│   │
 │   ├── help/
 │   │   └── help_handler.py            # меню помощи и гайд пользователя
-│   │
 │   └── ai/
 │       └── ai_handler.py             # Обработка AI-команд с категориями
 │
