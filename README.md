@@ -64,9 +64,14 @@ bot_template/
 │   └── subscription_manager.py    # Управление подписками и декоратор
 │
 ├── handlers/
-│   ├── start_handler.py          # Команда /start
-│   ├── ai_handler.py             # Обработка AI-команд с категориями
-│   └── common.py                 # (TODO) Общие декораторы и утилиты
+│   ├── start/
+│   │   └── start_handler.py          # Команда /start
+│   │
+│   ├── help/
+│   │   └── help_handler.py            # меню помощи и гайд пользователя
+│   │
+│   └── ai/
+│       └── ai_handler.py             # Обработка AI-команд с категориями
 │
 ├── tests/
 │   ├── test_start.py
