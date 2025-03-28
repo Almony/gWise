@@ -1,6 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from core.logger import CustomLogger
+from core.event_roter import on_message, on_callback_query
 
 logger = CustomLogger("HelpHandler")
 
@@ -17,7 +18,7 @@ def get_help_keyboard():
     ])
 
 
-@Client.on_message(filters.command("help"))
+@on_message(filters.command("help"))
 async def help_handler(client: Client, message: Message):
     await message.reply(
         "🆘 *Выбери раздел, о котором хочешь узнать больше:*",
@@ -27,7 +28,7 @@ async def help_handler(client: Client, message: Message):
     logger.info(f"Пользователь {message.from_user.id} запросил /help")
 
 
-@Client.on_callback_query(filters.regex("^help_"))
+@on_callback_query(filters.regex("^help_"))
 async def help_callback_handler(client: Client, callback_query: CallbackQuery):
     data = callback_query.data
     user_id = callback_query.from_user.id
