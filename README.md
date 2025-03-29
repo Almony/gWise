@@ -43,29 +43,32 @@ OPENAI_API_KEY=...
 ```
 bot_template/
 ├── ai/
-│   └── ai_manager.py             # Логика общения с OpenAI
+│   └── ai_manager.py              # Логика общения с OpenAI
 │
 ├── core/
-│   ├── config.py                 # Настройки из .env
-│   ├── logger.py                 # Кастомный логгер
-│   └── mongo_manager.py          # Работа с MongoDB (motor)
+│   ├── config.py                  # Настройки из .env
+│   ├── logger.py                  # Кастомный логгер
+│   └── mongo_manager.py           # Работа с MongoDB (motor)
 │
 ├── features/
 │   ├── reminder/
-│   │   └── manager.py            # Напоминания: добавление, проверка, отметка
+│   │   └── manager.py             # Напоминания: добавление, проверка, отметка
 │   ├── finance/
-│   │   └── manager.py            # Финансы: транзакции, фильтрация
+│   │   └── manager.py             # Финансы: транзакции, фильтрация
 │   └── group/
-│       └── manager.py            # Заготовка для работы с группами
+│       └── manager.py             # Заготовка для работы с группами
 │
 ├── subscription/
 │   └── subscription_manager.py    # Управление подписками и декоратор
 │
 ├── handlers/
-│   ├── start_handler.py          # Команда /start
+│   ├── start_handler.py           # Команда /start
 │   ├── help_handler.py            # меню помощи и гайд пользователя
-│   └── ai_handler.py             # Обработка AI-команд с категориями
+│   └── ai_handler.py              # Обработка AI-команд с категориями
 │
+├── infra/
+│   └── install_mongo.sh           # Установка mongoDB на Ubuntu
+|
 ├── tests/
 │   ├── test_start.py
 │   ├── test_ai.py
@@ -73,7 +76,7 @@ bot_template/
 │   ├── test_reminder.py
 │   └── test_subscription.py
 │
-├── main.py                       # Точка входа, запуск Pyrogram-клиента
+├── main.py                        # Точка входа, запуск Pyrogram-клиента
 ├── requirements.txt
 └── README.md
 ```
