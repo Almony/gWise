@@ -1,4 +1,5 @@
 from pyrogram import Client, filters
+from pyrogram.enums import ParseMode
 from pyrogram.types import Message
 from core.mongo_manager import MongoManager
 from core.event_roter import on_message
@@ -18,5 +19,5 @@ async def start_handler(client: Client, message: Message):
         "/ai-finance - финансовый анализ\n"
         "/ai-reminder - анализ напоминаний\n"
         "/ai-group - анализ групп",
-        parse_mode="Markdown"
+        parse_mode=ParseMode.MARKDOWN
     )

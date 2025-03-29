@@ -20,7 +20,7 @@ app = Client(
 
 @app.on_message(filters.text & ~filters.command(["start", "help", "ai", "ai-finance", "ai-reminder", "ai-group"]))
 async def fallback_handler(_, message):
-    await message.reply("Привет! Я пока только учусь 😊")
+    await message.reply("Привет! используй /help чтобы узнать о моих возможностях")
 
 if __name__ == "__main__":
     logger.info("Запуск бота...")

@@ -1,4 +1,5 @@
 from pyrogram import Client, filters
+from pyrogram.enums import ParseMode
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from core.logger import CustomLogger
 from core.event_roter import on_message, on_callback_query
@@ -23,7 +24,7 @@ async def help_handler(client: Client, message: Message):
     await message.reply(
         "🆘 *Выбери раздел, о котором хочешь узнать больше:*",
         reply_markup=get_help_keyboard(),
-        parse_mode="Markdown"
+        parse_mode=ParseMode.MARKDOWN
     )
     logger.info(f"Пользователь {message.from_user.id} запросил /help")
 
@@ -67,7 +68,7 @@ async def help_callback_handler(client: Client, callback_query: CallbackQuery):
         await callback_query.message.edit_text(
             help_texts["help_back"],
             reply_markup=get_help_keyboard(),
-            parse_mode="Markdown"
+            parse_mode=ParseMode.MARKDOWN
         )
     else:
         await callback_query.message.edit_text(
@@ -75,7 +76,7 @@ async def help_callback_handler(client: Client, callback_query: CallbackQuery):
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("⬅️ Назад", callback_data="help_back")]
             ]),
-            parse_mode="Markdown"
+            parse_mode=ParseMode.MARKDOWN
         )
 
     await callback_query.answer()
