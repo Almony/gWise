@@ -43,20 +43,25 @@ OPENAI_API_KEY=...
 ```
 bot_template/
 ├── ai/
+│   ├── hostory_manager.py         # сохраняет историю запросов пользователя к AI
 │   └── ai_manager.py              # Логика общения с OpenAI
 │
 ├── core/
+│   ├── mongo/
+│   │   ├── schemas.py             # All mongoDB schemas
+│   │   └── mongo_manager.py       # управление MongoDB
 │   ├── config.py                  # Настройки из .env
+│   ├── event_router.py            #
 │   ├── logger.py                  # Кастомный логгер
-│   └── mongo_manager.py           # Работа с MongoDB (motor)
+│   └── settings_manager.py        # Global bot settings
 │
 ├── features/
 │   ├── reminder/
-│   │   └── manager.py             # Напоминания: добавление, проверка, отметка
+│   │   └── reminder_manager.py             # Напоминания: добавление, проверка, отметка
 │   ├── finance/
-│   │   └── manager.py             # Финансы: транзакции, фильтрация
+│   │   └── finance_manager.py             # Финансы: транзакции, фильтрация
 │   └── group/
-│       └── manager.py             # Заготовка для работы с группами
+│       └── group_manager.py             # Заготовка для работы с группами
 │
 ├── subscription/
 │   └── subscription_manager.py    # Управление подписками и декоратор
@@ -70,11 +75,7 @@ bot_template/
 │   └── install_mongo.sh           # Установка mongoDB на Ubuntu
 |
 ├── tests/
-│   ├── test_start.py
-│   ├── test_ai.py
-│   ├── test_finance.py
-│   ├── test_reminder.py
-│   └── test_subscription.py
+|
 │
 ├── main.py                        # Точка входа, запуск Pyrogram-клиента
 ├── requirements.txt
