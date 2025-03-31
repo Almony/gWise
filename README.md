@@ -41,45 +41,51 @@ OPENAI_API_KEY=...
 ## 🗂️ Структура проекта
 
 ```
-bot_template/
+gWise/
 ├── ai/
-│   ├── hostory_manager.py         # сохраняет историю запросов пользователя к AI
-│   └── ai_manager.py              # Логика общения с OpenAI
+│   ├── ai_manager.py              # Взаимодействие с OpenAI API (GPT), логика запросов
+│   └── history_manager.py         # Логирование AI-запросов в MongoDB
 │
 ├── core/
-│   ├── mongo/
-│   │   ├── schemas.py             # All mongoDB schemas
-│   │   └── mongo_manager.py       # управление MongoDB
-│   ├── config.py                  # Настройки из .env
-│   ├── event_router.py            #
-│   ├── logger.py                  # Кастомный логгер
-│   └── settings_manager.py        # Global bot settings
+│   ├── config.py                  # Загрузка переменных окружения (.env)
+│   ├── event_roter.py            # Роутер событий (сообщения, callback-и, редактирования)
+│   ├── logger.py                  # Кастомный логгер с file+console выводом
+│   ├── settings_manager.py        # Хранение и управление глобальными настройками
+│   └── mongo/
+│       ├── mongo_manager.py       # Работа с MongoDB, пользователями, коллекциями
+│       └── schemas.py             # Pydantic-схемы для всех коллекций MongoDB
 │
 ├── features/
 │   ├── reminder/
-│   │   └── reminder_manager.py             # Напоминания: добавление, проверка, отметка
+│   │   └── reminder_manager.py    # Создание, хранение, архивирование напоминаний
+│   │                              # Поддержка повторяющихся событий, статусов
 │   ├── finance/
-│   │   └── finance_manager.py             # Финансы: транзакции, фильтрация
+│   │   └── finance_manager.py     # Учёт транзакций, категории, повторы, фильтрация
 │   └── group/
-│       └── group_manager.py             # Заготовка для работы с группами
+│       └── group_manager.py       # Группы: добавление, участники, посты, активность
 │
 ├── subscription/
-│   └── subscription_manager.py    # Управление подписками и декоратор
+│   └── subscription_manager.py    # Подписки (free/base/pro), лимиты, приоритеты, декоратор
 │
 ├── handlers/
-│   ├── start_handler.py           # Команда /start
-│   ├── help_handler.py            # меню помощи и гайд пользователя
-│   └── ai_handler.py              # Обработка AI-команд с категориями
+│   ├── start_handler.py           # Команда /start, приветствие и первичное создание пользователя
+│   ├── help_handler.py            # Интерактивное меню помощи с кнопками и подробностями
+│   └── ai_handler.py              # Категориальные AI-команды: /ai, /ai-finance, /ai-reminder, /ai-group
 │
+├── system/
+│   └── logger_db.py                   # Запись системных событий в MongoDB
+|
 ├── infra/
-│   └── install_mongo.sh           # Установка mongoDB на Ubuntu
-|
-├── tests/
-|
+│   └── install_mongo.sh           # Скрипт установки MongoDB (опционально)
 │
-├── main.py                        # Точка входа, запуск Pyrogram-клиента
-├── requirements.txt
-└── README.md
+├── logs/                          # Директория для логов: bot.log и модульные логи
+│
+├── tests/                         # Pytest-тесты (в разработке)
+│
+├── main.py                        # Точка входа: запуск Pyrogram-клиента, регистрация всех хендлеров
+├── requirements.txt               # Зависимости проекта
+└── README.md                      # Документация
+
 ```
 
 ---
