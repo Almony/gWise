@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from ai.ai_manager import ai_manager
-from subscription.subscription_manager import check_subscription
+from features.subscription.middlewares import check_subscription
 from core.event_roter import on_message
 
 def ai_command_handler(command_name: str, category: str):
