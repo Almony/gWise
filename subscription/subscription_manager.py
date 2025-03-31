@@ -1,4 +1,4 @@
-from core.mongo_manager import MongoManager
+from core.mongo.mongo_manager import MongoManager
 from core.logger import CustomLogger
 from pyrogram.types import Message
 from functools import wraps

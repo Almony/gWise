@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message
-from core.mongo_manager import MongoManager
+from core.mongo.mongo_manager import MongoManager
 from core.event_roter import on_message
 
 mongo = MongoManager()

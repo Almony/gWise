@@ -1,5 +1,5 @@
 import pytest
-from core.mongo_manager import MongoManager
+from core.mongo.mongo_manager import MongoManager
 
 @pytest.mark.asyncio
 async def test_create_user():

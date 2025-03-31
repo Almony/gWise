@@ -1,6 +1,6 @@
 import httpx
 from core.config import settings
-from core.mongo_manager import MongoManager
+from core.mongo.mongo_manager import MongoManager
 from subscription.subscription_manager import subscription_manager
 from core.logger import CustomLogger
 
