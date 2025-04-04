@@ -1,7 +1,7 @@
 import httpx
 from core.config import settings
 from core.mongo.mongo_manager import MongoManager
-from subscription.subscription_manager import subscription_manager
+from features.subscription.subscription_manager import subscription_manager
 from core.logger import CustomLogger
 
 logger = CustomLogger("AIManager")
@@ -15,10 +15,13 @@ class AIManager:
     async def send_request(self, user_id: int, prompt: str, category: str = "general"):
         user = await self.mongo.get_user(user_id)
         subscription = user.get("subscription", {})
-        months_limit = subscription_manager.get_month_limit(subscription.get("type", "free"))
+        sub_type = subscription.get("type", "free")
+        months_limit = subscription_manager.get_month_limit(sub_type)
 
-        # Добавим в prompt мета-информацию
-        system_prompt = f"Ты — AI-ассистент категории {category}. У пользователя подписка {subscription.get('type')}, доступно до {months_limit} мес. данных."
+        system_prompt = (
+            f"Ты — AI-ассистент категории {category}. "
+            f"У пользователя подписка {sub_type}, доступно до {months_limit} мес. данных."
+        )
 
         payload = {
             "model": "gpt-3.5-turbo",
@@ -39,15 +42,23 @@ class AIManager:
                 response = await client.post(self.url, json=payload, headers=headers, timeout=30)
                 response.raise_for_status()
                 data = response.json()
-                reply = data["choices"][0]["message"]["content"]
 
-                # Сохраняем в истории
+                reply = data["choices"][0]["message"]["content"]
+                tokens_used = data.get("usage", {}).get("total_tokens", 0)
+
+                # Сохраняем в Mongo
                 await self.mongo.get_collection("ai_requests").insert_one({
                     "user_id": user_id,
                     "prompt": prompt,
                     "category": category,
-                    "response": reply
+                    "response": reply,
+                    "tokens_used": tokens_used
                 })
+
+                # Вычитаем токены
+                if tokens_used > 0:
+                    await subscription_manager.decrement_tokens(user_id, tokens_used)
+                    logger.debug(f"{tokens_used} токенов списано у {user_id}")
 
                 return reply
 

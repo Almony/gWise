@@ -61,11 +61,11 @@ gWise/
 │   │                              # Поддержка повторяющихся событий, статусов
 │   ├── finance/
 │   │   └── finance_manager.py     # Учёт транзакций, категории, повторы, фильтрация
+│   ├── subscription/
+|   |   ├── middlewares.py           # subscription midlewares
+│   │   └── subscription_manager.py    # Подписки (free/base/pro), лимиты, приоритеты, декоратор
 │   └── group/
 │       └── group_manager.py       # Группы: добавление, участники, посты, активность
-│
-├── subscription/
-│   └── subscription_manager.py    # Подписки (free/base/pro), лимиты, приоритеты, декоратор
 │
 ├── handlers/
 │   ├── start_handler.py           # Команда /start, приветствие и первичное создание пользователя

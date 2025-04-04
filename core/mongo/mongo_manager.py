@@ -7,6 +7,14 @@ from core.mongo.schemas import MongoCollections
 
 logger = CustomLogger("MongoManager")
 
+# Новые лимиты токенов
+SUBSCRIPTION_TOKEN_LIMITS = {
+    "free": 10_000,
+    "base": 60_000,
+    "advanced": 150_000,
+    "pro": 400_000,
+}
+
 
 class MongoManager:
     def __init__(self):
@@ -41,6 +49,9 @@ class MongoManager:
             return existing
 
         now = datetime.utcnow()
+        subscription_type = "free"
+        tokens = SUBSCRIPTION_TOKEN_LIMITS[subscription_type]
+
         user_doc = {
             "user_id": user_id,
             "first_name": first_name,
@@ -50,13 +61,13 @@ class MongoManager:
             "created_at": now,
             "last_active_at": now,
             "subscription": {
-                "type": "free",
-                "ai_requests_left": 3,
+                "type": subscription_type,
+                "tokens_left": tokens,
                 "priority": 0,
                 "active": True
             },
             "subscription_history": {
-                "free": [now]
+                subscription_type: [now]
             },
             "service_reminder_status": True,
             "service_finance_status": True,

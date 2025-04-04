@@ -3,10 +3,12 @@ from pyrogram.types import Message
 from ai.ai_manager import ai_manager
 from features.subscription.middlewares import check_subscription
 from core.event_roter import on_message
+from features.subscription.middlewares import check_tokens
+
 
 def ai_command_handler(command_name: str, category: str):
     @on_message(filters.command(command_name))
-    @check_subscription()
+    @check_tokens()
     async def handler(client: Client, message: Message):
         prompt = message.text.split(maxsplit=1)
         if len(prompt) < 2:
