@@ -1,4 +1,4 @@
-from features.subscription import manager
+from features.subscription import subscription_manager
 from core.logger import CustomLogger
 from pyrogram.types import Message
 from functools import wraps
@@ -17,7 +17,7 @@ def check_subscription(allowed_tiers: list[str] = None):
         @wraps(func)
         async def wrapper(client, message: Message):
             user_id = message.from_user.id
-            subscription = await manager.get_subscription(user_id)
+            subscription = await subscription_manager.get_subscription(user_id)
             current_tier = subscription.get("type", "free")
 
             if current_tier not in allowed_tiers:
@@ -39,7 +39,7 @@ def check_tokens(min_required_tokens: int = 50):
         @wraps(func)
         async def wrapper(client, message: Message):
             user_id = message.from_user.id
-            has_tokens = await manager.has_enough_tokens(
+            has_tokens = await subscription_manager.has_enough_tokens(
                 user_id, required_tokens=min_required_tokens
             )
 
