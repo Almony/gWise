@@ -1,10 +1,8 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from ai.ai_manager import ai_manager
-from features.subscription.middlewares import check_subscription
-from core.event_roter import on_message
-from features.subscription.middlewares import check_tokens
-
+from features.ai import ai_manager
+from features.subscription import check_tokens
+from core import on_message
 
 def ai_command_handler(command_name: str, category: str):
     @on_message(filters.command(command_name))
@@ -19,7 +17,6 @@ def ai_command_handler(command_name: str, category: str):
         reply = await ai_manager.send_request(message.from_user.id, user_prompt, category)
         await message.reply(reply)
 
-# Регистрация хэндлеров
 ai_command_handler("ai", "general")
 ai_command_handler("ai-finance", "finance")
 ai_command_handler("ai-reminder", "reminder")

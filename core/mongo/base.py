@@ -1,0 +1,13 @@
+from core.mongo.client import db
+from core.logger import CustomLogger
+from core.mongo.schemas import MongoCollections
+
+logger = CustomLogger("MongoBase")
+
+
+def get_collection(name: str):
+    if not hasattr(MongoCollections, name.upper()):
+        logger.warning(f"Запрос к несуществующей коллекции: {name}")
+    collection = db[name]
+    logger.debug(f"Получена коллекция: {name}")
+    return collection

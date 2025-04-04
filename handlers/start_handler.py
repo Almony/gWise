@@ -1,15 +1,13 @@
 from pyrogram import Client, filters
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message
-from core.mongo.mongo_manager import MongoManager
-from core.event_roter import on_message
-
-mongo = MongoManager()
+from core import on_message
+from core.mongo import UsersRepository
 
 @on_message(filters.command("start"))
 async def start_handler(client: Client, message: Message):
     user = message.from_user
-    result = await mongo.create_user(user.id, user.first_name or "", user.username or "")
+    result = await UsersRepository.create_user(user.id, user.first_name or "", user.username or "")
 
     subscription = result.get("subscription", {})
     tier = subscription.get("type", "free")

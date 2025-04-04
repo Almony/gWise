@@ -1,0 +1,12 @@
+class MongoCollections:
+    USERS = "users"
+    REMINDERS = "reminders"
+    REMINDERS_ARCHIVE = "reminders_archive"
+    FINANCE_ENTRIES = "finance_entries"
+    AI_REQUESTS = "ai_requests"
+    GROUPS = "groups"
+    GROUP_MEMBERS = "group_members"
+    GROUP_POSTS = "group_posts"
+    SETTINGS = "settings"
+    LOGS_SYSTEM = "logs_system"
+    LOGS_USER_ACTIVITY = "logs_user_activity"

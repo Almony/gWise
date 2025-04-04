@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from core.config import settings
 from core.logger import CustomLogger
-from core.event_roter import register_all
+from core.event_router import register_all
 
 from handlers import help_handler
 from handlers import ai_handler

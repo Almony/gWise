@@ -1,13 +1,10 @@
-from motor.motor_asyncio import AsyncIOMotorClient
 from datetime import datetime
 from typing import Optional
-from core.config import settings
+from core.mongo.base import get_collection
 from core.logger import CustomLogger
-from core.mongo.schemas import MongoCollections
 
-logger = CustomLogger("MongoManager")
+logger = CustomLogger("UsersRepository")
 
-# Новые лимиты токенов
 SUBSCRIPTION_TOKEN_LIMITS = {
     "free": 10_000,
     "base": 60_000,
@@ -16,26 +13,15 @@ SUBSCRIPTION_TOKEN_LIMITS = {
 }
 
 
-class MongoManager:
-    def __init__(self):
-        self.client = AsyncIOMotorClient(settings.MONGODB_URI)
-        self.db = self.client["telegram_ai_bot"]
+class UsersRepository:
 
-    def get_collection(self, name: str):
-        if not hasattr(MongoCollections, name.upper()):
-            logger.warning(f"Запрос к несуществующей коллекции: {name}")
-        collection = self.db[name]
-        logger.debug(f"Получена коллекция: {name}")
-        return collection
-
-    # === Пользователи ===
-
-    async def get_user(self, user_id: int):
-        users = self.get_collection(MongoCollections.USERS)
+    @staticmethod
+    async def get_user(user_id: int):
+        users = get_collection("users")
         return await users.find_one({"user_id": user_id})
 
+    @staticmethod
     async def create_user(
-        self,
         user_id: int,
         first_name: str,
         username: str,
@@ -43,7 +29,7 @@ class MongoManager:
         is_premium: Optional[bool] = None,
         invited_by: Optional[int] = None
     ):
-        users = self.get_collection(MongoCollections.USERS)
+        users = get_collection("users")
         existing = await users.find_one({"user_id": user_id})
         if existing:
             return existing
@@ -79,22 +65,25 @@ class MongoManager:
 
         if invited_by:
             user_doc["invited_by"] = invited_by
-            await self.add_referral(invited_by, user_id)
+            await UsersRepository.add_referral(invited_by, user_id)
 
         await users.insert_one(user_doc)
         logger.info(f"Создан новый пользователь: {user_id}")
         return user_doc
 
-    async def update_user(self, user_id: int, data: dict):
-        users = self.get_collection(MongoCollections.USERS)
+    @staticmethod
+    async def update_user(user_id: int, data: dict):
+        users = get_collection("users")
         await users.update_one({"user_id": user_id}, {"$set": data})
         logger.debug(f"Обновлены данные пользователя {user_id}: {data}")
 
-    async def track_activity(self, user_id: int):
-        await self.update_user(user_id, {"last_active_at": datetime.utcnow()})
+    @staticmethod
+    async def track_activity(user_id: int):
+        await UsersRepository.update_user(user_id, {"last_active_at": datetime.utcnow()})
 
-    async def add_referral(self, inviter_id: int, new_user_id: int):
-        users = self.get_collection(MongoCollections.USERS)
+    @staticmethod
+    async def add_referral(inviter_id: int, new_user_id: int):
+        users = get_collection("users")
         await users.update_one(
             {"user_id": inviter_id},
             {"$push": {

@@ -1,19 +1,20 @@
-# 🤖 Telegram AI Assistant Bot (v2)
+# 🤖 Telegram AI Assistant Bot (v3)
 
-Мощный и масштабируемый Telegram-бот с AI-интеграцией (GPT), подписками, MongoDB и модульной архитектурой.
+Мощный и масштабируемый Telegram-бот с AI-интеграцией (OpenAI GPT), подписками, MongoDB и модульной архитектурой.
 
 ---
 
 ## 🚀 Возможности
 
-- 🧠 AI-ассистент с категориями и ограничениями по подписке
-- 🗓 Напоминания с временем, хранением и планируемыми уведомлениями
-- 💰 Учёт расходов/доходов
-- 👥 Поддержка чатов и групп (в разработке)
-- 📊 История запросов и транзакций
-- 🧪 Тестирование через `pytest`
-- 🔐 Подключение через `.env`, логирование и безопасная структура
-- 💡 Расширяемость: легко добавлять новые фичи
+- 🧠 AI-ассистент с категориями: финансы, группы, напоминания
+- 🔐 Подписки с лимитами на токены (Free, Base, Advanced, Pro)
+- 🗓 Напоминания с хранением, уведомлениями и архивом
+- 💰 Учёт расходов и доходов, с повторяющимися тратами
+- 👥 Работа с группами и постами (аналитика, структура)
+- 📊 Логирование всех AI-запросов
+- 🧪 Pytest-тесты
+- ☁️ MongoDB + Pydantic + Asynchronous I/O
+- 💡 Расширяемость и чистая архитектура
 
 ---
 
@@ -42,50 +43,70 @@ OPENAI_API_KEY=...
 
 ```
 gWise/
-├── ai/
-│   ├── ai_manager.py              # Взаимодействие с OpenAI API (GPT), логика запросов
-│   └── history_manager.py         # Логирование AI-запросов в MongoDB
-│
-├── core/
-│   ├── config.py                  # Загрузка переменных окружения (.env)
-│   ├── event_roter.py            # Роутер событий (сообщения, callback-и, редактирования)
-│   ├── logger.py                  # Кастомный логгер с file+console выводом
-│   ├── settings_manager.py        # Хранение и управление глобальными настройками
-│   └── mongo/
-│       ├── mongo_manager.py       # Работа с MongoDB, пользователями, коллекциями
-│       └── schemas.py             # Pydantic-схемы для всех коллекций MongoDB
-│
-├── features/
-│   ├── reminder/
-│   │   └── reminder_manager.py    # Создание, хранение, архивирование напоминаний
-│   │                              # Поддержка повторяющихся событий, статусов
-│   ├── finance/
-│   │   └── finance_manager.py     # Учёт транзакций, категории, повторы, фильтрация
-│   ├── subscription/
-|   |   ├── middlewares.py           # subscription midlewares
-│   │   └── subscription_manager.py    # Подписки (free/base/pro), лимиты, приоритеты, декоратор
-│   └── group/
-│       └── group_manager.py       # Группы: добавление, участники, посты, активность
-│
-├── handlers/
-│   ├── start_handler.py           # Команда /start, приветствие и первичное создание пользователя
-│   ├── help_handler.py            # Интерактивное меню помощи с кнопками и подробностями
-│   └── ai_handler.py              # Категориальные AI-команды: /ai, /ai-finance, /ai-reminder, /ai-group
-│
-├── system/
-│   └── logger_db.py                   # Запись системных событий в MongoDB
+├── core/                          # Базовые утилиты
+│   ├── __init__.py                # Упрощённый импорт core компонентов
+│   ├── base.py                    # BaseManager с логгером и доступом к Mongo
+│   ├── config.py                  # Загрузка .env
+│   ├── event_router.py            # Роутер событий (on_message, on_callback)
+│   ├── logger.py                  # Кастомный логгер
+│   └── settings_manager.py        # Глобальные настройки
 |
-├── infra/
-│   └── install_mongo.sh           # Скрипт установки MongoDB (опционально)
-│
-├── logs/                          # Директория для логов: bot.log и модульные логи
-│
-├── tests/                         # Pytest-тесты (в разработке)
-│
-├── main.py                        # Точка входа: запуск Pyrogram-клиента, регистрация всех хендлеров
-├── requirements.txt               # Зависимости проекта
-└── README.md                      # Документация
+├── core/system/                   #
+│   ├── __init__.py                # get_collection, UsersRepository
+│   ├── sys_logger.py              # Логирование системных событий в MongoDB
+|
+├── core/mongo/                   # Работа с MongoDB
+│   ├── __init__.py                # get_collection, UsersRepository
+│   ├── client.py                  # Mongo-клиент
+│   ├── base.py                    # get_collection()
+│   ├── users.py                   # Методы по users
+│   └── schemas/
+│       ├── __init__.py
+│       ├── ai.py
+│       ├── finance.py
+│       ├── group.py
+│       ├── reminder.py
+│       ├── settings.py
+│       ├── system.py
+│       └── collections.py
 
+├── features/
+│   ├── ai/
+│   │   ├── __init__.py
+│   │   ├── manager.py
+│   │   └── history.py
+│   ├── finance/
+│   │   ├── __init__.py
+│   │   └── manager.py
+│   ├── group/
+│   │   ├── __init__.py
+│   │   └── manager.py
+│   ├── reminder/
+│   │   ├── __init__.py
+│   │   └── manager.py
+│   └── subscription/
+│       ├── __init__.py
+│       ├── manager.py
+│       └── middlewares.py
+
+├── handlers/
+│   ├── start_handler.py
+│   ├── help_handler.py
+│   └── ai_handler.py
+
+├── system/
+│   └── logger_db.py               # Логирование системных событий в MongoDB
+
+├── infra/
+│   └── install_mongo.sh           # Установка MongoDB (опционально)
+
+├── logs/                          # Автоматически создаваемые логи
+│
+├── tests/                         # Тесты на Pytest
+│
+├── main.py                        # Точка входа
+├── requirements.txt
+└── README.md
 ```
 
 ---

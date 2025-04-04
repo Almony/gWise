@@ -1,19 +1,17 @@
 import httpx
 from core.config import settings
-from core.mongo.mongo_manager import MongoManager
-from features.subscription.subscription_manager import subscription_manager
-from core.logger import CustomLogger
+from core.base import BaseManager
+from features.subscription import manager
 
-logger = CustomLogger("AIManager")
-
-class AIManager:
+class AIManager(BaseManager):
     def __init__(self):
-        self.mongo = MongoManager()
+        super().__init__("AIManager")
         self.api_key = settings.OPENAI_API_KEY
         self.url = "https://api.openai.com/v1/chat/completions"
 
     async def send_request(self, user_id: int, prompt: str, category: str = "general"):
-        user = await self.mongo.get_user(user_id)
+        from core.mongo import UsersRepository  # импорт здесь, чтобы избежать циклов
+        user = await UsersRepository.get_user(user_id)
         subscription = user.get("subscription", {})
         sub_type = subscription.get("type", "free")
         months_limit = subscription_manager.get_month_limit(sub_type)
@@ -46,8 +44,7 @@ class AIManager:
                 reply = data["choices"][0]["message"]["content"]
                 tokens_used = data.get("usage", {}).get("total_tokens", 0)
 
-                # Сохраняем в Mongo
-                await self.mongo.get_collection("ai_requests").insert_one({
+                await self.get_collection("ai_requests").insert_one({
                     "user_id": user_id,
                     "prompt": prompt,
                     "category": category,
@@ -55,15 +52,14 @@ class AIManager:
                     "tokens_used": tokens_used
                 })
 
-                # Вычитаем токены
                 if tokens_used > 0:
                     await subscription_manager.decrement_tokens(user_id, tokens_used)
-                    logger.debug(f"{tokens_used} токенов списано у {user_id}")
+                    self.logger.debug(f"{tokens_used} токенов списано у {user_id}")
 
                 return reply
 
             except Exception as e:
-                logger.error(f"AI error: {str(e)}")
+                self.logger.error(f"AI error: {str(e)}")
                 return "Произошла ошибка при обращении к AI. Попробуйте позже."
 
 ai_manager = AIManager()
