@@ -1,8 +1,10 @@
 from pyrogram import Client, filters
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message
-from core import on_message
+from core import on_message, CustomLogger
 from core.mongo import UsersRepository
+
+logger = CustomLogger("start_handler")
 
 @on_message(filters.command("start"))
 async def start_handler(client: Client, message: Message):

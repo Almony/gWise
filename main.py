@@ -18,7 +18,7 @@ app = Client(
     bot_token=settings.BOT_TOKEN
 )
 
-@app.on_message(filters.text & ~filters.command(["start", "help", "ai", "ai-finance", "ai-reminder", "ai-group"]))
+@app.on_message(filters.text & ~filters.command(["start", "help", "ai"])) # "ai-finance", "ai-reminder", "ai-group"
 async def fallback_handler(_, message):
     await message.reply("Привет! используй /help чтобы узнать о моих возможностях")
 

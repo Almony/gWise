@@ -2,7 +2,11 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from features.ai import ai_manager
 from features.subscription import check_tokens
-from core import on_message
+from core import on_message, CustomLogger
+
+
+logger = CustomLogger("ai_handler")
+
 
 def ai_command_handler(command_name: str, category: str):
     @on_message(filters.command(command_name))

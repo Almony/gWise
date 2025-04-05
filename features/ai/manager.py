@@ -1,7 +1,7 @@
 import httpx
 from core.config import settings
 from core.base import BaseManager
-from features.subscription import manager
+from features.subscription import subscription_manager
 
 class AIManager(BaseManager):
     def __init__(self):
