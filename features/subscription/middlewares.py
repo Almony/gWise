@@ -1,5 +1,5 @@
 from features.subscription import subscription_manager
-from core.logger import CustomLogger
+from core.logging.logger import CustomLogger
 from pyrogram.types import Message
 from functools import wraps
 

@@ -1,4 +1,4 @@
-from core.logger import CustomLogger
+from core.logging.logger import CustomLogger
 from core.mongo import get_collection
 
 

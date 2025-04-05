@@ -1,7 +1,7 @@
 # event_router.py
 from pyrogram import Client
 from typing import Callable, List, Tuple
-from core.logger import CustomLogger
+from core.logging.logger import CustomLogger
 
 class EventRouter:
     def __init__(self):

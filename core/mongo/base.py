@@ -1,5 +1,5 @@
 from core.mongo.client import db
-from core.logger import CustomLogger
+from core.logging.logger import CustomLogger
 from core.mongo.schemas import MongoCollections
 
 logger = CustomLogger("MongoBase")

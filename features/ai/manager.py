@@ -1,5 +1,5 @@
 import httpx
-from core.config import settings
+from core.system.config import settings
 from core.base import BaseManager
 from features.subscription import subscription_manager
 

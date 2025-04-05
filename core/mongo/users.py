@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from core.mongo.base import get_collection
-from core.logger import CustomLogger
+from core.logging.logger import CustomLogger
 
 logger = CustomLogger("UsersRepository")
 
