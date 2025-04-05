@@ -1,3 +1,3 @@
-from logger import CustomLogger
-from logging_config import setup_logging
-from sys_logger import SystemLoggerDB
+from .logger import CustomLogger
+from .logging_config import setup_logging
+from .sys_logger import SystemLoggerDB

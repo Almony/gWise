@@ -19,7 +19,7 @@ def get_help_keyboard():
     ])
 
 @on_message(filters.command("help"))
-@handle_exceptions()
+@handle_exceptions
 async def help_handler(client: Client, message: Message):
     await message.reply(
         "🆘 *Выбери раздел, о котором хочешь узнать больше:*",
@@ -29,7 +29,7 @@ async def help_handler(client: Client, message: Message):
     logger.info(f"Пользователь {message.from_user.id} запросил /help")
 
 @on_callback_query(filters.regex("^help_"))
-@handle_exceptions()
+@handle_exceptions
 async def help_callback_handler(client: Client, callback_query: CallbackQuery):
     data = callback_query.data
     user_id = callback_query.from_user.id

@@ -10,7 +10,7 @@ logger = CustomLogger("start_handler")
 
 
 @on_message(filters.command("start"))
-@handle_exceptions()
+@handle_exceptions
 async def start_handler(client: Client, message: Message):
     user = message.from_user
     result = await UsersRepository.create_user(user.id, user.first_name or "", user.username or "")
