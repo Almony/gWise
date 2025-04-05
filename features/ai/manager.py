@@ -2,6 +2,8 @@ import httpx
 from core.system.config import settings
 from core.base import BaseManager
 from features.subscription import subscription_manager
+from core.retry import retry_openai
+
 
 class AIManager(BaseManager):
     def __init__(self):
@@ -9,6 +11,7 @@ class AIManager(BaseManager):
         self.api_key = settings.OPENAI_API_KEY
         self.url = "https://api.openai.com/v1/chat/completions"
 
+    @retry_openai()
     async def send_request(self, user_id: int, prompt: str, category: str = "general"):
         from core.mongo import UsersRepository  # импорт здесь, чтобы избежать циклов
         user = await UsersRepository.get_user(user_id)

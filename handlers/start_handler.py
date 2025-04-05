@@ -3,10 +3,14 @@ from pyrogram.enums import ParseMode
 from pyrogram.types import Message
 from core import on_message, CustomLogger
 from core.mongo import UsersRepository
+from core.handlers import handle_exceptions
+
 
 logger = CustomLogger("start_handler")
 
+
 @on_message(filters.command("start"))
+@handle_exceptions()
 async def start_handler(client: Client, message: Message):
     user = message.from_user
     result = await UsersRepository.create_user(user.id, user.first_name or "", user.username or "")

@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from core.system.config import settings
-from core.logging.logger import CustomLogger
-from core.system.event_router import register_all
+from core.logging import CustomLogger, setup_logging
+from core.system import register_all
 
 from handlers import help_handler
 from handlers import ai_handler
@@ -23,6 +23,7 @@ async def fallback_handler(_, message):
     await message.reply("Привет! используй /help чтобы узнать о моих возможностях")
 
 if __name__ == "__main__":
+    setup_logging()
     logger.info("Запуск бота...")
     register_all(app=app)
     app.run()

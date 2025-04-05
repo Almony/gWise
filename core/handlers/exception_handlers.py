@@ -4,6 +4,7 @@ import asyncio
 import logging
 from functools import wraps
 
+from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import FloodWait, RPCError
 from pymongo.errors import DuplicateKeyError, PyMongoError
 
@@ -18,42 +19,30 @@ logger = logging.getLogger(__name__)
 
 def handle_exceptions(func):
     @wraps(func)
-    async def wrapper(client, message, *args, **kwargs):
+    async def wrapper(client, update, *args, **kwargs):
         try:
-            return await func(client, message, *args, **kwargs)
+            return await func(client, update, *args, **kwargs)
 
         except BusinessError as e:
-            await message.reply_text(e.message)
+            await _reply(update, e.message)
 
         # === Telegram ===
         except FloodWait as e:
             logger.warning(f"FloodWait: ждём {e.value} сек")
             await asyncio.sleep(e.value)
-            return await func(client, message, *args, **kwargs)
+            return await func(client, update, *args, **kwargs)
 
         except RPCError as e:
             logger.exception("Telegram API ошибка")
-            await message.reply_text("Ошибка: Telegram недоступен. Попробуйте позже.")
+            await _reply(update, "Ошибка: Telegram недоступен. Попробуйте позже.")
 
         # === OpenAI ===
-        except openai.RateLimitError as e:
-            logger.warning(f"OpenAI RateLimitError: {e}")
+        except (openai.RateLimitError, openai.APIConnectionError, openai.Timeout) as e:
+            logger.warning(f"OpenAI временная ошибка: {e}")
             raise GPTServiceUnavailable()
 
-        except openai.APIConnectionError as e:
-            logger.warning(f"OpenAI APIConnectionError: {e}")
-            raise GPTServiceUnavailable()
-
-        except openai.Timeout as e:
-            logger.warning(f"OpenAI Timeout: {e}")
-            raise GPTServiceUnavailable()
-
-        except openai.BadRequestError as e:
-            logger.error(f"OpenAI BadRequestError: {e}")
-            raise GPTBadRequest()
-
-        except openai.AuthenticationError as e:
-            logger.error(f"OpenAI AuthenticationError: {e}")
+        except (openai.BadRequestError, openai.AuthenticationError) as e:
+            logger.error(f"OpenAI ошибка запроса или авторизации: {e}")
             raise GPTBadRequest()
 
         except openai.OpenAIError as e:
@@ -66,11 +55,18 @@ def handle_exceptions(func):
 
         except PyMongoError as e:
             logger.exception("Ошибка MongoDB")
-            await message.reply_text("Ошибка: не удалось обратиться к базе данных.")
+            await _reply(update, "Ошибка: не удалось обратиться к базе данных.")
 
         # === System ===
         except Exception as e:
             logger.exception("Непредвиденная ошибка")
-            await message.reply_text("Что-то пошло не так. Мы уже работаем над этим.")
+            await _reply(update, "Что-то пошло не так. Мы уже работаем над этим.")
 
     return wrapper
+
+
+async def _reply(update, text: str):
+    if isinstance(update, Message):
+        await update.reply_text(text)
+    elif isinstance(update, CallbackQuery):
+        await update.answer(text, show_alert=True)
