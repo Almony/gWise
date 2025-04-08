@@ -2,10 +2,7 @@ from pyrogram import Client, filters
 from core.system.config import settings
 from core.logging import CustomLogger, setup_logging
 from core.system import register_all
-
-from handlers import help_handler
-from handlers import ai_handler
-from handlers import start_handler
+from handlers import help_handler, ai_handler, start_handler
 
 
 logger = CustomLogger("Main")
