@@ -3,6 +3,10 @@ from core.logging.telegram_reporter import TelegramErrorHandler
 
 
 def setup_logging():
+    """
+    setup_logging configures and initializes the logging system.
+    """
+
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 

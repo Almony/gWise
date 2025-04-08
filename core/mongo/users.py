@@ -14,6 +14,9 @@ SUBSCRIPTION_TOKEN_LIMITS = {
 
 
 class UsersRepository:
+    """
+    UsersRepository abstracts MongoDB operations for user-related data.
+    """
 
     @staticmethod
     async def get_user(user_id: int):

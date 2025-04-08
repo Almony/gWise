@@ -3,6 +3,10 @@ from core.mongo.schemas import MongoCollections, SettingsSchema
 
 
 class SettingsManager(BaseManager):
+    """
+    SettingsManager provides centralized access and control over related components or services.
+    """
+
     def __init__(self):
         super().__init__("SettingsManager")
 

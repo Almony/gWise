@@ -4,11 +4,19 @@ from typing import Optional
 
 
 class Category(BaseModel):
+    """
+    Category is a core class used to encapsulate related functionality.
+    """
+
     main: str
     sub: Optional[str] = None
 
 
 class FinanceEntrySchema(BaseModel):
+    """
+    FinanceEntrySchema defines the structure and validation rules for a specific MongoDB document.
+    """
+
     user_id: int
     amount: float
     category: Category

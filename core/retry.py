@@ -9,6 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 def retry_openai(max_attempts: int = 3, base_delay: float = 1.0):
+    """
+    retry_openai provides retry logic for handling failures in external API calls.
+    """
+
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
@@ -29,6 +33,10 @@ def retry_openai(max_attempts: int = 3, base_delay: float = 1.0):
 
 
 def retry_telegram(max_attempts: int = 2, delay: float = 1.0):
+    """
+    retry_telegram provides retry logic for handling failures in external API calls.
+    """
+
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):

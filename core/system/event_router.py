@@ -3,6 +3,10 @@ from typing import Callable, List, Tuple
 from core.logging.logger import CustomLogger
 
 class EventRouter:
+    """
+    EventRouter is responsible for routing events to appropriate handlers within the system.
+    """
+
     def __init__(self):
         self.message_handlers: List[Tuple] = []
         self.callback_query_handlers: List[Tuple] = []

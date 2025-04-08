@@ -4,6 +4,10 @@ from typing import Optional
 
 
 class SystemLogSchema(BaseModel):
+    """
+    SystemLogSchema defines the structure and validation rules for a specific MongoDB document.
+    """
+
     level: str
     event_type: str
     message: str

@@ -18,6 +18,10 @@ from exceptions import (
 logger = logging.getLogger(__name__)
 
 def handle_exceptions(func):
+    """
+    handle_exceptions manages exception handling across the application.
+    """
+
     @wraps(func)
     async def wrapper(client, update, *args, **kwargs):
         try:
@@ -66,6 +70,10 @@ def handle_exceptions(func):
 
 
 async def _reply(update, text: str):
+    """
+    _reply is a function used to perform a specific task within the module.
+    """
+
     if isinstance(update, Message):
         await update.reply_text(text)
     elif isinstance(update, CallbackQuery):

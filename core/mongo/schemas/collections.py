@@ -1,4 +1,8 @@
 class MongoCollections:
+    """
+    MongoCollections is a core class used to encapsulate related functionality.
+    """
+
     USERS = "users"
     REMINDERS = "reminders"
     REMINDERS_ARCHIVE = "reminders_archive"

@@ -1,3 +1,7 @@
+"""
+These schemas defins the structure and validation rules for a specific MongoDB document.
+"""
+
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional, List
