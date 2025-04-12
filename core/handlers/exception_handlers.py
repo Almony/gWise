@@ -2,20 +2,17 @@
 
 import asyncio
 import logging
-from functools import wraps
+import openai
 
+from exceptions import BusinessError, GPTServiceUnavailable, GPTBadRequest
+from functools import wraps
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import FloodWait, RPCError
 from pymongo.errors import DuplicateKeyError, PyMongoError
 
-import openai
-from exceptions import (
-    BusinessError,
-    GPTServiceUnavailable,
-    GPTBadRequest,
-)
 
 logger = logging.getLogger(__name__)
+
 
 def handle_exceptions(func):
     """

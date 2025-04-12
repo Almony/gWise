@@ -1,6 +1,7 @@
+from core.logging.logger import CustomLogger
 from pyrogram import Client
 from typing import Callable, List, Tuple
-from core.logging.logger import CustomLogger
+
 
 class EventRouter:
     """
