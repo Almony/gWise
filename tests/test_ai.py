@@ -1,5 +1,5 @@
 import pytest
-from ai.ai_manager import ai_manager
+from features.ai.manager import ai_manager
 
 @pytest.mark.asyncio
 async def test_ai_request():

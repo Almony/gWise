@@ -1,5 +1,5 @@
 import pytest
-from subscription.subscription_manager import subscription_manager
+from features.subscription.manager import subscription_manager
 
 @pytest.mark.asyncio
 async def test_subscription_logic():
