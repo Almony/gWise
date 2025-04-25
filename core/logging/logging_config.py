@@ -1,5 +1,3 @@
-# gWise/core/logging/logging_config.py
-
 import logging
 
 LOG_LEVEL = logging.DEBUG  # Можно потом переопределить через .env, если потребуется
