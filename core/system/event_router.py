@@ -1,57 +1,20 @@
-from core.logging.logger import CustomLogger
+# gWise/core/system/event_router.py
+
 from pyrogram import Client
-from typing import Callable, List, Tuple
+from pyrogram.handlers import MessageHandler, CallbackQueryHandler
 
+from handlers import gpt_handler
 
-class EventRouter:
+def register_all(app: Client) -> None:
     """
-    EventRouter is responsible for routing events to appropriate handlers within the system.
+    Регистрация всех событий Pyrogram.
+    Каждый модуль должен вызывать свою функцию регистрации здесь.
     """
+    from handlers import start_handler, help_handler, subscription_handler, gpt_handler
 
-    def __init__(self):
-        self.message_handlers: List[Tuple] = []
-        self.callback_query_handlers: List[Tuple] = []
-        self.edited_message_handlers: List[Tuple] = []
-        self.logger =  CustomLogger(name="EventRouter")
+    start_handler.register(app)
+    help_handler.register(app)
+    subscription_handler.register(app)
+    gpt_handler.register(app)
 
-    # === Декораторы ===
-    def on_message(self, *args, **kwargs):
-        def wrapper(func: Callable):
-            self.message_handlers.append((args, kwargs, func))
-            return func
-        return wrapper
-
-    def on_callback_query(self, *args, **kwargs):
-        def wrapper(func: Callable):
-            self.callback_query_handlers.append((args, kwargs, func))
-            return func
-        return wrapper
-
-    def on_edited_message(self, *args, **kwargs):
-        def wrapper(func: Callable):
-            self.edited_message_handlers.append((args, kwargs, func))
-            return func
-        return wrapper
-
-    # === Регистрация всех хендлеров ===
-    def register_all(self, app: Client):
-        for args, kwargs, func in self.message_handlers:
-            app.on_message(*args, **kwargs)(func)
-
-        for args, kwargs, func in self.callback_query_handlers:
-            app.on_callback_query(*args, **kwargs)(func)
-
-        for args, kwargs, func in self.edited_message_handlers:
-            app.on_edited_message(*args, **kwargs)(func)
-
-        self.logger.info("All handlers registered")
-
-
-# Глобальный экземпляр
-event_router = EventRouter()
-
-# Быстрый доступ к декораторам
-on_message = event_router.on_message
-on_callback_query = event_router.on_callback_query
-on_edited_message = event_router.on_edited_message
-register_all = event_router.register_all
+    # Можно расширять регистрацию других событий здесь
