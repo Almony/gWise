@@ -11,12 +11,12 @@ logger = CustomLogger("help_handler")
 def get_help_keyboard():
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Группы", callback_data="help_groups"),
-            InlineKeyboardButton("Напоминания", callback_data="help_reminders")
+            InlineKeyboardButton("Группы и каналы", callback_data="help_groups"),
+            InlineKeyboardButton("Напоминания", callback_data="help_reminders"),
         ],
         [
             InlineKeyboardButton("Финансы", callback_data="help_finance"),
-            InlineKeyboardButton("AI", callback_data="help_ai")
+            InlineKeyboardButton("AI", callback_data="help_ai"),
         ]
     ])
 
@@ -39,8 +39,7 @@ async def help_callback_handler(client: Client, callback_query: CallbackQuery):
     help_texts = {
         "help_groups": (
             "👥 *Группы и каналы*\n\n"
-            "Пакет различных услуг для управления вашими группами:\n"
-            "— Фильтры от спама и флуда\n"
+            "Я могу предоставить ряд услуг для анализа ваших каналов, групп и чатов.\n"
             "— Блокировка пользователей\n"
             "— Статистика и аналитика\n"
             "— Запланированные сообщения\n\n"
