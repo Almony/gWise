@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from enum import Enum
 
 
-class DotEnvVars(Enum):
+class DotEnv(Enum):
     API_ID = "API_ID"
     API_HASH = "API_HASH"
     BOT_TOKEN = "BOT_TOKEN"
@@ -17,12 +17,11 @@ class DotEnvVars(Enum):
 
 
 class BotEnv:
-
     @classmethod
     def load(cls) -> None:
         load_dotenv()
 
-        missing_vars = [var.value for var in DotEnvVars if not os.getenv(var.value)]
+        missing_vars = [var.value for var in DotEnv if not os.getenv(var.value)]
         if missing_vars:
             raise EnvironmentError(f"Missing required environment variables: {', '.join(missing_vars)}")
 
