@@ -2,7 +2,7 @@
 
 from pyrogram import Client
 from motor.motor_asyncio import AsyncIOMotorClient
-from core.system.bot_env import BotEnv, DotEnv
+from core.system import DotEnv
 from core.logging.logger import CustomLogger
 from core.mongo.mongo_client import MongoClientWrapper
 from features.ai.assistant import AIClient
@@ -18,24 +18,24 @@ class BotContext:
 
     @classmethod
     def init(cls):
-        BotEnv.load()
+        DotEnv.validate()
 
-        cls.mongo_client = AsyncIOMotorClient(BotEnv.get(DotEnv.MONGODB_URI.value))
+        cls.mongo_client = AsyncIOMotorClient(DotEnv.MONGODB_URI.value)
         cls.db = cls.mongo_client.get_default_database()
         cls.mongo_wrapper = MongoClientWrapper(cls.db)
 
         cls.logger = CustomLogger("gWise")
 
         cls.ai_client = AIClient(
-            api_key=BotEnv.get(DotEnv.OPENAI_API_KEY.value),
+            api_key=DotEnv.OPENAI_API_KEY.value,
             mongo_wrapper=cls.mongo_wrapper,
             logger=cls.logger
         )
 
         cls.bot = Client(
             "gWise",
-            api_id=int(BotEnv.get(DotEnv.API_ID.value)),
-            api_hash=BotEnv.get(DotEnv.API_HASH.value),
-            bot_token=BotEnv.get(DotEnv.BOT_TOKEN.value),
+            api_id=int(DotEnv.API_ID.value),
+            api_hash=DotEnv.API_HASH.value,
+            bot_token=DotEnv.BOT_TOKEN.value,
             plugins=None
         )

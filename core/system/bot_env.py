@@ -3,28 +3,24 @@
 import os
 from dotenv import load_dotenv
 from enum import Enum
+from core.handlers import handle_exceptions
 
 
-class DotEnv(Enum):
-    API_ID = "API_ID"
-    API_HASH = "API_HASH"
-    BOT_TOKEN = "BOT_TOKEN"
-    MONGODB_URI = "MONGODB_URI"
-    OPENAI_API_KEY = "OPENAI_API_KEY"
-    ADMIN_LOG_CHAT_ID = "ADMIN_LOG_CHAT_ID"
-    ADMIN_IDS = "ADMIN_IDS"
-    DEV_IDS = "DEV_IDS"
+load_dotenv()
 
-
-class BotEnv:
-    @classmethod
-    def load(cls) -> None:
-        load_dotenv()
-
-        missing_vars = [var.value for var in DotEnv if not os.getenv(var.value)]
-        if missing_vars:
-            raise EnvironmentError(f"Missing required environment variables: {', '.join(missing_vars)}")
+class DotEnv(str, Enum):
+    API_ID = os.getenv("API_ID", "")
+    API_HASH = os.getenv("API_HASH", "")
+    BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+    MONGODB_URI = os.getenv("MONGODB_URI", "")
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+    ADMIN_LOG_CHAT_ID = os.getenv("ADMIN_LOG_CHAT_ID", "")
+    ADMIN_IDS = os.getenv("ADMIN_IDS", "")
+    DEV_IDS = os.getenv("DEV_IDS", "")
 
     @classmethod
-    def get(cls, key: str, default=None):
-        return os.getenv(key, default)
+    @handle_exceptions
+    def validate(cls):
+        missing = [var.name for var in cls if not var.value]
+        if missing:
+            raise EnvironmentError(f"Missing required environment variables: {missing}")
