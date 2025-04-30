@@ -1,24 +1,9 @@
-# gWise/core/logging/logger.py
-
 import logging
-from core.logging.logging_config import setup_basic_logging
+from core.logging.logging_config import LOGGING_CONFIG  # ensures config is applied
 
-class CustomLogger:
-    def __init__(self, name: str):
-        setup_basic_logging()
-        self.logger = logging.getLogger(name)
-
-    def debug(self, message: str):
-        self.logger.debug(message)
-
-    def info(self, message: str):
-        self.logger.info(message)
-
-    def warning(self, message: str):
-        self.logger.warning(message)
-
-    def error(self, message: str):
-        self.logger.error(message)
-
-    def exception(self, message: str):
-        self.logger.exception(message)
+def get_logger(name: str) -> logging.Logger:
+    """
+    Возвращает логгер с заданным именем, уже настроенный по конфигурации.
+    Используется во всех модулях проекта gWise.
+    """
+    return logging.getLogger(name)
