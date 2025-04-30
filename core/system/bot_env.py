@@ -7,6 +7,7 @@ class DotEnv(Enum):
     API_HASH = None
     BOT_TOKEN = None
     MONGODB_URI = None
+    GWISE_MONGODB = None
     OPENAI_API_KEY = None
     ADMIN_LOG_CHAT_ID = None
     ADMIN_IDS = None

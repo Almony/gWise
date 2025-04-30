@@ -22,7 +22,7 @@ class BotContext:
         DotEnv.validate()
 
         cls.mongo_client = AsyncIOMotorClient(DotEnv.MONGODB_URI.value)
-        cls.db = cls.mongo_client.get_default_database()
+        cls.db = cls.mongo_client[DotEnv.GWISE_MONGODB.value]
         cls.mongo_wrapper = MongoClientWrapper(cls.db)
 
         cls.logger = CustomLogger("gWise")
