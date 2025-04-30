@@ -63,10 +63,6 @@ def handle_exceptions(func: Callable[..., Awaitable]) -> Callable[..., Awaitable
             return
 
         # === System (любые другие ошибки) ===
-        except EnvironmentError as e:
-            logger.error(f"Critical configuration error: {e}")
-            sys.exit(1)
-
         except Exception as e:
             logger.error("Непредвидённая ошибка.")
             await _reply(update, "Что-то пошло не так. Мы уже работаем над этим.")

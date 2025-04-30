@@ -18,6 +18,7 @@ class BotContext:
 
     @classmethod
     def init(cls):
+        DotEnv.load()
         DotEnv.validate()
 
         cls.mongo_client = AsyncIOMotorClient(DotEnv.MONGODB_URI.value)

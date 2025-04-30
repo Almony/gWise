@@ -2,11 +2,11 @@
 
 import asyncio
 from core.system.bot_context import BotContext
-from core.system.bot_env import BotEnv
+from core.system import DotEnv
 
 async def report_error_to_telegram(error_text: str):
     try:
-        admin_chat_id = int(BotEnv.get("ADMIN_LOG_CHAT_ID"))
+        admin_chat_id = int(DotEnv.ADMIN_LOG_CHAT_ID.value) # BotEnv.get("ADMIN_LOG_CHAT_ID"))
         if BotContext.bot.is_connected:
             await BotContext.bot.send_message(chat_id=admin_chat_id, text=f"🚨 Ошибка:\n<pre>{error_text}</pre>", parse_mode="html")
     except Exception as e:
