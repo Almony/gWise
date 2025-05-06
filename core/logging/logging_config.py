@@ -3,18 +3,15 @@ import logging
 from logging.config import dictConfig
 from pathlib import Path
 
-# === Создание директории logs ===
+
 LOG_DIR = Path(__file__).resolve().parent.parent.parent / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-# === Режим отладки из ENV ===
 DEBUG = True
 
-# === Общий формат логов ===
 LOG_FORMAT = "[%(asctime)s] %(levelname)s | %(name)s | %(message)s"
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-# === Конфигурация логов ===
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
