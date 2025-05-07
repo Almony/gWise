@@ -1,5 +1,3 @@
-# gWise/features/ai/assistant.py
-
 import openai
 from datetime import datetime
 from core.mongo.schemas.ai_request_schema import AIRequestSchema

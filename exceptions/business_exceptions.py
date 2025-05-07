@@ -49,8 +49,16 @@ class NotEnoughBalance(BusinessException):
     def __init__(self):
         super().__init__("Ошибка: недостаточно средств для операции.")
 
-# ==== Features ====
 
-class AnalyzerNotEnabled(BusinessException):
-    """Анализатор для канала/группы отключён."""
-    pass
+##################################################################
+####################### ==== Features ====########################
+##################################################################
+
+class ChannelAnalyzerDisabled(BusinessException):
+    def __init__(self):
+        super().__init__(f"Analyzer is disabled")
+
+
+class BotNotAdminError(BusinessException):
+    def __init__(self):
+        super().__init__(f"Bot is not admin in channel")

@@ -7,7 +7,13 @@ from typing import Callable, Awaitable, Union
 
 from core.system.bot_context import BotContext
 from core.logging.telegram_reporter import report_error_to_telegram
-from exceptions.business_exceptions import BusinessException, GPTServiceUnavailable, GPTBadRequest
+from exceptions.business_exceptions import (
+    BusinessException,
+    GPTServiceUnavailable,
+    GPTBadRequest,
+    ChannelAnalyzerDisabled,
+    SubscriptionRequired,
+    BotNotAdminError)
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import FloodWait, RPCError
 from pymongo.errors import DuplicateKeyError, PyMongoError
@@ -60,6 +66,22 @@ def handle_exceptions(func: Callable[..., Awaitable]) -> Callable[..., Awaitable
         except PyMongoError as e:
             logger.exception("Ошибка MongoDB.")
             await _reply(update, "Ошибка: проблемы с базой данных. Попробуйте позже.")
+            return
+
+        # === Features ===
+        except SubscriptionRequired as e:
+            logger.exception("Ошибка Подписка не активна.")
+            await _reply(update, "Ошибка: Ваша подписка не активна")
+            return
+
+        except ChannelAnalyzerDisabled as e:
+            logger.exception("Analyzer выключен.")
+            await _reply(update, "Ошибка: Analyzer выключен, проверте настройки")
+            return
+
+        except BotNotAdminError as e:
+            logger.exception("Бот не получил права администратора")
+            await _reply(update, "Ошибка: Бот не получил права администратора")
             return
 
         # === System (любые другие ошибки) ===
