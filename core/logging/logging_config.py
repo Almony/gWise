@@ -41,6 +41,13 @@ LOGGING_CONFIG = {
             "encoding": "utf-8",
             "level": "DEBUG",
         },
+        "channel_analyzer": {
+            "class": "logging.FileHandler",
+            "filename": str(LOG_DIR / "channel_analyzer.log"),
+            "formatter": "default",
+            "encoding": "utf-8",
+            "level": "DEBUG",
+        },
         "system_file": {
             "class": "logging.FileHandler",
             "filename": str(LOG_DIR / "system.log"),
@@ -57,6 +64,11 @@ LOGGING_CONFIG = {
         },
         "gwise.ai": {
             "handlers": ["ai_file", "console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "gwise.channel_analyzer": {
+            "handlers": ["channel_analyzer", "console"],
             "level": "DEBUG",
             "propagate": False,
         },

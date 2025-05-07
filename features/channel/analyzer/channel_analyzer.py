@@ -1,11 +1,11 @@
 from typing import Optional
 
 from pyrogram import Client
-from motor.motor_asyncio import AsyncIOMotorDatabase
+from motor.motor_asyncio import AsyncIOMotorClient
 
 from core.system.bot_context import BotContext
-from core.mongo.collections import get_channel_collection, get_channel_posts_collection
-from core.utils.logger import logger
+from core.mongo.collections import MongoCollections
+from core.logging import get_logger
 
 
 class ChannelAnalyzer:
@@ -13,20 +13,16 @@ class ChannelAnalyzer:
         self.context: BotContext = context
         self.bot: Client = context.bot
         # TODO: Do I really need acces to all DB?
-        self.db: AsyncIOMotorDatabase = context.db
+        self.db: AsyncIOMotorClient = context.db  # type: ignore
         self.channel_id: int = channel_id
         self.user_id: int = user_id
 
         # TODO: how and where should I work with collections?
-        self.channel_collection = get_channel_collection(self.db)
-        self.posts_collection = get_channel_posts_collection(self.db)
+        self.channel_collection = self.db[MongoCollections.CHANNELS.value]
+        self.posts_collection = self.db[MongoCollections.CHANNEL_POSTS.value]
 
         # TODO: use custome logger
-        # self.logger = logger.bind(
-        #     scope="channel_analyzer",
-        #     channel_id=self.channel_id,
-        #     user_id=self.user_id
-        # )
+        self.logger = self.context.logger
 
     async def validate_access(self) -> None:
         """
