@@ -17,7 +17,7 @@ class BotContext:
 
     @classmethod
     def init(cls):
-        DotEnv.load()
+        # DotEnv.load()
         DotEnv.validate()
 
         cls.logger = get_logger("gwise")

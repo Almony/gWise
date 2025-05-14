@@ -13,6 +13,7 @@ class MongoCollections(Enum):
     GROUP_POSTS = "group_posts"
     CHANNELS = "channels"
     CHANNEL_POSTS = "channel_posts"
+    CHANNEL_COMMENTS = "channel_comments"
     CHATS = "chats"
     CHAT_MEMBERS = "chat_members"
     CHAT_POSTS = "chat_posts"
