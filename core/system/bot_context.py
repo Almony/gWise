@@ -39,3 +39,7 @@ class BotContext:
             bot_token=DotEnv.BOT_TOKEN.value,
             plugins=None
         )
+
+    @classmethod
+    async def async_init(cls):
+        await cls.mongo_wrapper.init_indexes()

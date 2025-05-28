@@ -6,6 +6,7 @@ from core.system.event_router import register_all
 
 async def main():
     BotContext.init()
+    await BotContext.async_init()
 
     app = BotContext.bot
     logger = BotContext.logger

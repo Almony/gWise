@@ -7,6 +7,7 @@ from typing import Optional
 
 class AIRequestSchema(BaseModel):
     user_id: int
+    request_id: int
     prompt: str
     response: Optional[str] = None
     category: str = "general"

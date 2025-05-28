@@ -30,12 +30,10 @@ def register(app: Client):
             last_name = message.from_user.last_name,
             language_code = message.from_user.language_code
         )
-        await mongo.insert_one("users", user.dict())
-        BotContext.logger.info(f"Создан новый пользователь: {user.user_id}")
-
-
-        await message.reply_text(
-            "👋 Привет! Я gWise Бот.\n\n"
-            "Я помогу тебе анализировать каналы, группы и чаты с помощью AI.\n"
-            "Попробуй команду /help чтобы узнать больше."
-        )
+        is_inserted = await mongo.insert_unique("users", user.dict())
+        if is_inserted:
+            BotContext.logger.info(f"Создан новый пользователь: {user.user_id}")
+            await message.reply_text("👋 Привет! Я gWise Бот.")
+        else:
+            BotContext.logger.info(f"User {user.user_id} already exists in DB")
+            await message.reply_text("👋 С возвращением!")
