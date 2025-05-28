@@ -13,3 +13,4 @@ class UserSchema(BaseModel):
     subscription_plan: str = "free"
     tokens_used: int = 0
     created_at: datetime = Field(default_factory=datetime.utcnow)
+

@@ -1,9 +1,10 @@
 # gWise/handlers/start_handler.py
 
 from pyrogram import Client, filters
-from core.handlers.exception_handler import handle_exceptions
-from core.system.bot_context import BotContext
-from core.mongo.schemas.user_schema import UserSchema
+from pyrogram.types import Message
+from core.handlers import handle_exceptions
+from core.system import BotContext
+from core.mongo.schemas import UserSchema
 from pymongo.errors import DuplicateKeyError
 
 """
@@ -19,24 +20,18 @@ from pymongo.errors import DuplicateKeyError
 def register(app: Client):
     @app.on_message(filters.command("start"))
     @handle_exceptions
-    async def start_handler(client: Client, message):
-        user_id = message.from_user.id
-        username = message.from_user.username
-        first_name = message.from_user.first_name
-        last_name = message.from_user.last_name
-        language_code = message.from_user.language_code
+    async def start_handler(client: Client, message: Message) -> None:
         mongo = BotContext.mongo_wrapper
 
-
         user = UserSchema(
-            user_id=user_id,
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            language_code=language_code,
+            user_id = message.from_user.id,
+            username = message.from_user.username,
+            first_name = message.from_user.first_name,
+            last_name = message.from_user.last_name,
+            language_code = message.from_user.language_code
         )
         await mongo.insert_one("users", user.dict())
-        BotContext.logger.info(f"Создан новый пользователь: {user_id}")
+        BotContext.logger.info(f"Создан новый пользователь: {user.user_id}")
 
 
         await message.reply_text(
