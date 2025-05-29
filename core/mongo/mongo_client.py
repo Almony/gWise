@@ -1,5 +1,3 @@
-# gWise/core/mongo/mongo_client.py
-
 from core.mongo import MongoCollections
 from typing import Any, Dict, List, Optional
 from motor.motor_asyncio import AsyncIOMotorDatabase
@@ -24,7 +22,7 @@ class MongoClientWrapper:
         for collection_name, unique_field in UNIQUE_INDEXES.items():
             await self.db[collection_name].create_index(unique_field, unique=True)
 
-    async def insert_unique(self, collection: str, document: dict) -> ObjectId | None:
+    async def insert_unique(self, collection: str, document: Dict) -> ObjectId | None:
         try:
             return await self.insert_one(collection, document)
         except DuplicateKeyError:
