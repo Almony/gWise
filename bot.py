@@ -1,19 +1,18 @@
-import sys
 import asyncio
 import argparse
+import sys
 
 if sys.platform.startswith("linux"):
     import uvloop
     uvloop.install()
+
+from ptpython.repl import embed
 
 from core.system.bot_context import BotContext
 from core.system.event_router import register_all
 
 
 async def start_bot():
-    BotContext.init()
-    await BotContext.async_init()
-
     app = BotContext.bot
     logger = BotContext.logger
 
@@ -25,32 +24,33 @@ async def start_bot():
         await asyncio.Event().wait()
 
 
-async def open_console():
-    from aioconsole import start_interactive_server
+async def start_console():
+    context = {
+        "app": BotContext.bot,
+        "db": BotContext.db,
+    }
+    banner = """
+    Wllcome to interactive Bot's debug console.
+    Loaded objects: app, db
+    """
 
-    banner = "Async gWise Console — `ctx`, `db`, `bot`, `logger`"
     print(banner)
-    locals={
-            "bot": BotContext.bot,
-            "db": BotContext.db,
-            "logger": BotContext.logger,
-            "ctx": BotContext,
-        }
 
-    server = await start_interactive_server(host="localhost", port=4444)
-    await server.wait_closed()
+    await embed(globals=context)
+
 
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--console", action="store_true", help="Open async console after bot start")
     args = parser.parse_args()
 
-    if args.console:
-        tasks = [asyncio.create_task(open_console())]
-    else:
-        tasks = [asyncio.create_task(start_bot())]
+    BotContext.init()
+    await BotContext.async_init()
 
-    await asyncio.gather(*tasks)
+    if args.console:
+        await start_console()
+    else:
+        await start_bot()
 
 
 if __name__ == "__main__":
