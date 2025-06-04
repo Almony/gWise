@@ -26,17 +26,21 @@ async def start_bot():
 
 async def start_console():
     context = {
+        "ctxt": BotContext,
         "app": BotContext.bot,
         "db": BotContext.db,
     }
     banner = """
-    Wllcome to interactive Bot's debug console.
-    Loaded objects: app, db
-    """
+        Welcome to the interactive debug bot console.
+        Loaded objects: app, db, ctxt
+        You can use `await` with any async function.
+        """
 
-    print(banner)
-
-    await embed(globals=context)
+    await embed(
+        globals=context,
+        return_asyncio_coroutine=True,
+        vi_mode=True,
+        title=banner)
 
 
 async def main():
